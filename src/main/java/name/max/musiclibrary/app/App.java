@@ -7,6 +7,7 @@ import java.util.List;
 import name.max.musiclibrary.dao.PlaylistDAO;
 import name.max.musiclibrary.dao.TrackDAO;
 import name.max.musiclibrary.dao.DBTrackDAO;
+import name.max.musiclibrary.entities.PlayList;
 import name.max.musiclibrary.entities.Track;
 import name.max.musiclibrary.services.DefaultPlaylistService;
 import name.max.musiclibrary.services.DefaultTrackService;
@@ -16,13 +17,13 @@ import name.max.musiclibrary.services.DefaultTrackService;
 public class App {
 
 	public static void main(String[] args) throws IOException, SQLException {
-		DefaultTrackService defaultTrackService = new DefaultTrackService();
+//		DefaultTrackService defaultTrackService = new DefaultTrackService();
 //		List<Track> tracks = defaultTrackService.getFilesAsTracks("F:\\Tracks");
 		PlaylistDAO pld = new PlaylistDAO();
-		TrackDAO trd = new DBTrackDAO();
-//		DefaultPlaylistService dpls = new DefaultPlaylistService(pld, trd);
-//		List<Track> getAll = defaultTrackService.getAllTracks();
-		
+		DBTrackDAO trd = new DBTrackDAO();
+		DefaultPlaylistService dpls = new DefaultPlaylistService(pld, trd);
+		List<PlayList> getAll = dpls.getAllPlaylists();
+		System.out.println(getAll);
 		
 //		System.out.println(pld.getByID(3));
 //		System.out.println(dpls.getPlaylist("new playlist"));
@@ -47,7 +48,7 @@ public class App {
 //		}
 //		
 		// trackService.fillTags(tracks);
-		System.out.println(defaultTrackService.getByID(1));
+//		System.out.println(defaultTrackService.getByID(1));
 	}
 
 }

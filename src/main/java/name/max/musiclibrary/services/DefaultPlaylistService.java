@@ -40,5 +40,8 @@ public class DefaultPlaylistService implements PlayListService{
 	public PlayList getByID(long id) {
 		return pld.getByID(id);
 	}
-
+	
+	public List<PlayList> getAllPlaylists() {
+		return pld.getAll();
+	}
 }

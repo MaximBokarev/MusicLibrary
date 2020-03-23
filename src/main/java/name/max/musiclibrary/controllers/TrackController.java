@@ -1,4 +1,4 @@
-package name.max.musiclibrary.app;
+package name.max.musiclibrary.controllers;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,14 +31,15 @@ public class TrackController extends HttpServlet {
 			}
 
 			Track track = defaultTrackService.getByID(id);
-				if (track != null) {
-					req.setAttribute("track", track);
-					super.getServletContext().getRequestDispatcher("/track-details.jsp").forward(req, resp);
-				} else
+			if (track != null) {
+				req.setAttribute("track", track);
+				super.getServletContext().getRequestDispatcher("/track-details.jsp").forward(req, resp);
+			} else {
 
-			req.setAttribute("msg", "Track with id " + id + " not found");
-			super.getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
-		
+				req.setAttribute("msg", "Track with id " + id + " not found");
+				super.getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
+			}
+
 		} else {
 			try {
 				List<Track> tracks = defaultTrackService.getAllTracks();

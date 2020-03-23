@@ -4,12 +4,23 @@
 	version="2.4">
 	<display-name>Music Library</display-name>
 	<description>This is a simple web application.</description>
+	
 	<servlet>
 		<servlet-name>TrackController</servlet-name>
-		<servlet-class>name.max.musiclibrary.app.TrackController</servlet-class>
+		<servlet-class>name.max.musiclibrary.controllers.TrackController</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>TrackController</servlet-name>
 		<url-pattern>/tracks/*</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>PlaylistController</servlet-name>
+		<servlet-class>name.max.musiclibrary.controllers.PlaylistController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PlaylistController</servlet-name>
+		<url-pattern>/playlists/*</url-pattern>
+	</servlet-mapping>
+	
 </web-app>
