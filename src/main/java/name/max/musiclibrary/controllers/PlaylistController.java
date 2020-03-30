@@ -26,12 +26,17 @@ public class PlaylistController extends HttpServlet{
 		
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<PlayList> playlists = defaultPlaylistService.getAllPlaylists();
-		req.setAttribute("playlists", playlists);
-		super.getServletContext().getRequestDispatcher("/playlist.jsp").forward(req, resp);
-		int a = playlists.size();
-		String string = Integer.toString(a);
-		super.getServletContext().log(string);
+		try { 
+			List<PlayList> playlists = defaultPlaylistService.getAllPlaylists();
+			int a = playlists.size();
+			String string = Integer.toString(a);
+			super.getServletContext().log(string);
+			req.setAttribute("playlists", playlists);
+			super.getServletContext().getRequestDispatcher("/playlist.jsp").forward(req, resp);
+		}catch (RuntimeException e) {
+			req.setAttribute("msg", e.getMessage());
+			super.getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
+		}
 	}
 
 }

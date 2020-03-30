@@ -12,7 +12,7 @@ import java.util.List;
 import name.max.musiclibrary.entities.PlayList;
 import name.max.musiclibrary.entities.Track;
 
-public class PlaylistDAO implements DAO<PlayList> {
+public class PlaylistDAO extends AbstractDAO<PlayList> {
 	public void save(PlayList playlist) {
 		try {
 			Connection connection = DriverManager.getConnection("jdbc:hsqldb:file:F:/Database/musiclibrary", "SA", "");
@@ -100,11 +100,9 @@ public class PlaylistDAO implements DAO<PlayList> {
 	}
 
 	public List<PlayList> getAll() {
-		Connection connection;
 		List<PlayList> playlists = new ArrayList<PlayList>();
 
-		try {
-			connection = DriverManager.getConnection("jdbc:hsqldb:file:F:/Database/musiclibrary", "SA", "");
+		try(Connection connection = super.getConnection()) {
 			Statement st = connection.createStatement();
 
 			ResultSet rs = st.executeQuery("SELECT * FROM PLAYLIST");
@@ -117,7 +115,7 @@ public class PlaylistDAO implements DAO<PlayList> {
 
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return playlists;
 

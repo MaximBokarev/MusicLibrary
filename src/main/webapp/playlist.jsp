@@ -2,7 +2,7 @@
 <html>
 <body>
 <ul>
-<c:forEach items="${plalist}" var="plalist">
+<c:forEach items="${playlists}" var="playlist">
     <li><a href="playlist/${playlist.id}">${playlist.name}</a></li>
 </c:forEach>
 </ul>
