@@ -30,7 +30,7 @@ public class PlaylistDAO extends AbstractDAO<PlayList> {
 	public PlayList getByID(long id) {
 		PlayList playlist = null;
 		try (Connection connection = super.getConnection()) {
-			Statement st = connection.createStatement();
+				Statement st = connection.createStatement();
 
 			ResultSet rs = st.executeQuery("SELECT * FROM TRACK RIGHT JOIN PLAYLIST ON TRACK.PLAYLIST_ID = PLAYLIST.ID"
 					+ " where playlist.id = " + id);
@@ -98,7 +98,7 @@ public class PlaylistDAO extends AbstractDAO<PlayList> {
 	public List<PlayList> getAll() {
 		List<PlayList> playlists = new ArrayList<PlayList>();
 
-		try (Connection connection = super.getConnection()) {
+		try(Connection connection = super.getConnection()) {
 			Statement st = connection.createStatement();
 
 			ResultSet rs = st.executeQuery("SELECT * FROM PLAYLIST");

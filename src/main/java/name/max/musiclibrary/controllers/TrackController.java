@@ -1,6 +1,8 @@
 package name.max.musiclibrary.controllers;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -32,8 +34,20 @@ public class TrackController extends HttpServlet {
 
 			Track track = defaultTrackService.getByID(id);
 			if (track != null) {
-				req.setAttribute("track", track);
-				super.getServletContext().getRequestDispatcher("/track-details.jsp").forward(req, resp);
+				String action = String.valueOf(req.getParameter("action"));
+				super.log("You call " + action + " action");
+				if ("play".equalsIgnoreCase(action)) {
+					InputStream is = defaultTrackService.play(track);
+					OutputStream os = resp.getOutputStream();
+
+					int b = -1;
+					while ((b=is.read()) != -1) {
+						os.write(b);
+					}
+				} else {
+					req.setAttribute("track", track);
+					super.getServletContext().getRequestDispatcher("/track-details.jsp").forward(req, resp);
+				}
 			} else {
 
 				req.setAttribute("msg", "Track with id " + id + " not found");

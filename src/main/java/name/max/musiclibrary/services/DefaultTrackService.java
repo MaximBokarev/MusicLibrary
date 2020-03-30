@@ -2,6 +2,7 @@ package name.max.musiclibrary.services;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -9,11 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import name.max.musiclibrary.dao.DBTrackDAO;
+import name.max.musiclibrary.dao.InMemoryTrackDAO;
+import name.max.musiclibrary.dao.TrackDAO;
 import name.max.musiclibrary.entities.Track;
 
 public class DefaultTrackService implements TrackService {
-	private DBTrackDAO td = new DBTrackDAO();
-
+	private TrackDAO td = new InMemoryTrackDAO();
+	
+	
 	public List<Track> getFilesAsTracks(String path) {
 
 		File folder = new File(path);
@@ -31,10 +35,11 @@ public class DefaultTrackService implements TrackService {
 		return tracks;
 	}
 
+
 	public void fillTags(List<Track> tracks) throws IOException {
 		for (Track track : tracks) {
 			System.out.println(track.getPath());
-			try (InputStream is = new FileInputStream(track.getPath())) {
+			try(InputStream is = new FileInputStream(track.getPath())) {
 				byte[] b = new byte[3];
 
 				while (is.read(b) != -1) {
@@ -45,9 +50,9 @@ public class DefaultTrackService implements TrackService {
 						System.out.println("it works");
 					}
 				}
-			}
+			} 
 		}
-
+		
 	}
 
 	public void saveAllTracks(List<Track> tracks) {
@@ -62,8 +67,20 @@ public class DefaultTrackService implements TrackService {
 
 	}
 
+
+
 	public Track getByID(long id) {
 		return td.getByID(id);
+}
+
+
+	@Override
+	public InputStream play(Track track) {
+		try {
+			return new FileInputStream(new File(track.getPath()));
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
