@@ -1,7 +1,6 @@
 package name.max.musiclibrary.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,11 +9,10 @@ import java.util.List;
 
 import name.max.musiclibrary.entities.Track;
 
-public class DBTrackDAO implements TrackDAO {
+public class DBTrackDAO extends AbstractDAO<Track> {
 
 	public void save(Track track) {
-		try {
-			Connection connection = DriverManager.getConnection("jdbc:hsqldb:file:F:/Database/musiclibrary", "SA", "");
+		try (Connection connection = super.getConnection()) {
 			Statement st = connection.createStatement();
 			st.executeUpdate("inser into track (id, path) values (" + track.getId() + ", " + track.getPath() + ")");
 
@@ -29,8 +27,7 @@ public class DBTrackDAO implements TrackDAO {
 
 	public Track getByID(long id) {
 		Track track = null;
-		try {
-			Connection connection = DriverManager.getConnection("jdbc:hsqldb:file:F:/Database/musiclibrary", "SA", "");
+		try (Connection connection = super.getConnection()) {
 			Statement st = connection.createStatement();
 
 			ResultSet rs = st.executeQuery("select * from track where id = " + id);
@@ -38,7 +35,7 @@ public class DBTrackDAO implements TrackDAO {
 				long id1 = rs.getLong("id");
 				String path = rs.getString("path");
 				track = new Track(path, id1);
-				
+
 			}
 			connection.close();
 
@@ -52,10 +49,7 @@ public class DBTrackDAO implements TrackDAO {
 	}
 
 	public void setPlaylist(long idPlaylist, List<Track> tracks) {
-		Connection connection;
-
-		try {
-			connection = DriverManager.getConnection("jdbc:hsqldb:file:F:/Database/musiclibrary", "SA", "");
+		try (Connection connection = super.getConnection()) {
 			Statement st = connection.createStatement();
 			String trackID = "";
 			int index = 0;
@@ -81,24 +75,24 @@ public class DBTrackDAO implements TrackDAO {
 	}
 
 	public List<Track> getAll() {
-		
+
 		Connection connection = null;
 		List<Track> tracks = new ArrayList<Track>();
 		try {
 			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		
-		connection = DriverManager.getConnection("jdbc:hsqldb:file:F:/Database/musiclibrary", "SA", "");
-		Statement st = connection.createStatement();
 
-		ResultSet rs = st.executeQuery("SELECT * FROM TRACK");
+			connection = super.getConnection();
+			Statement st = connection.createStatement();
 
-		while (rs.next()) {
-			String path = rs.getString("path");
-			long id = rs.getLong("id");
-			Track track = new Track(path, id);
-			tracks.add(track);
-				
-		}
+			ResultSet rs = st.executeQuery("SELECT * FROM TRACK");
+
+			while (rs.next()) {
+				String path = rs.getString("path");
+				long id = rs.getLong("id");
+				Track track = new Track(path, id);
+				tracks.add(track);
+
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new RuntimeException(e.getMessage());
 		} finally {

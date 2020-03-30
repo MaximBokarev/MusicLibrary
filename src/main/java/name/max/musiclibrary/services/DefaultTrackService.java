@@ -9,14 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import name.max.musiclibrary.dao.DBTrackDAO;
-import name.max.musiclibrary.dao.InMemoryTrackDAO;
-import name.max.musiclibrary.dao.TrackDAO;
 import name.max.musiclibrary.entities.Track;
 
 public class DefaultTrackService implements TrackService {
-	private TrackDAO td = new DBTrackDAO();
-	
-	
+	private DBTrackDAO td = new DBTrackDAO();
+
 	public List<Track> getFilesAsTracks(String path) {
 
 		File folder = new File(path);
@@ -34,11 +31,10 @@ public class DefaultTrackService implements TrackService {
 		return tracks;
 	}
 
-
 	public void fillTags(List<Track> tracks) throws IOException {
 		for (Track track : tracks) {
 			System.out.println(track.getPath());
-			try(InputStream is = new FileInputStream(track.getPath())) {
+			try (InputStream is = new FileInputStream(track.getPath())) {
 				byte[] b = new byte[3];
 
 				while (is.read(b) != -1) {
@@ -49,9 +45,9 @@ public class DefaultTrackService implements TrackService {
 						System.out.println("it works");
 					}
 				}
-			} 
+			}
 		}
-		
+
 	}
 
 	public void saveAllTracks(List<Track> tracks) {
@@ -66,10 +62,8 @@ public class DefaultTrackService implements TrackService {
 
 	}
 
-
-
 	public Track getByID(long id) {
 		return td.getByID(id);
-}
+	}
 
 }

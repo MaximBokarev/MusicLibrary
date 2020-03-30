@@ -1,7 +1,6 @@
 package name.max.musiclibrary.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,8 +13,7 @@ import name.max.musiclibrary.entities.Track;
 
 public class PlaylistDAO extends AbstractDAO<PlayList> {
 	public void save(PlayList playlist) {
-		try {
-			Connection connection = DriverManager.getConnection("jdbc:hsqldb:file:F:/Database/musiclibrary", "SA", "");
+		try (Connection connection = super.getConnection()) {
 			Statement st = connection.createStatement();
 			st.executeUpdate(
 					"insert into playlist (id, name) values(" + playlist.getId() + ", " + playlist.getName() + ")");
@@ -31,8 +29,7 @@ public class PlaylistDAO extends AbstractDAO<PlayList> {
 
 	public PlayList getByID(long id) {
 		PlayList playlist = null;
-		try {
-			Connection connection = DriverManager.getConnection("jdbc:hsqldb:file:F:/Database/musiclibrary", "SA", "");
+		try (Connection connection = super.getConnection()) {
 			Statement st = connection.createStatement();
 
 			ResultSet rs = st.executeQuery("SELECT * FROM TRACK RIGHT JOIN PLAYLIST ON TRACK.PLAYLIST_ID = PLAYLIST.ID"
@@ -65,8 +62,7 @@ public class PlaylistDAO extends AbstractDAO<PlayList> {
 
 	public PlayList getByName(String name) {
 		PlayList playlist = null;
-		try {
-			Connection connection = DriverManager.getConnection("jdbc:hsqldb:file:F:/Database/musiclibrary", "SA", "");
+		try (Connection connection = super.getConnection()) {
 			PreparedStatement st = connection.prepareStatement(
 					"SELECT * FROM TRACK RIGHT JOIN PLAYLIST ON TRACK.PLAYLIST_ID = PLAYLIST.ID  WHERE PLAYLIST.NAME = ?");
 			st.setString(1, name);
@@ -102,7 +98,7 @@ public class PlaylistDAO extends AbstractDAO<PlayList> {
 	public List<PlayList> getAll() {
 		List<PlayList> playlists = new ArrayList<PlayList>();
 
-		try(Connection connection = super.getConnection()) {
+		try (Connection connection = super.getConnection()) {
 			Statement st = connection.createStatement();
 
 			ResultSet rs = st.executeQuery("SELECT * FROM PLAYLIST");
