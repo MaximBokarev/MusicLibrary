@@ -10,12 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import name.max.musiclibrary.dao.DBTrackDAO;
-import name.max.musiclibrary.dao.InMemoryTrackDAO;
-import name.max.musiclibrary.dao.TrackDAO;
 import name.max.musiclibrary.entities.Track;
 
 public class DefaultTrackService implements TrackService {
-	private TrackDAO td = new InMemoryTrackDAO();
+	private DBTrackDAO td = new DBTrackDAO();
 	
 	
 	public List<Track> getFilesAsTracks(String path) {
