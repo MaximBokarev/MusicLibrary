@@ -2,6 +2,7 @@ package name.max.musiclibrary.services;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -14,7 +15,7 @@ import name.max.musiclibrary.dao.TrackDAO;
 import name.max.musiclibrary.entities.Track;
 
 public class DefaultTrackService implements TrackService {
-	private TrackDAO td = new DBTrackDAO();
+	private TrackDAO td = new InMemoryTrackDAO();
 	
 	
 	public List<Track> getFilesAsTracks(String path) {
@@ -71,5 +72,15 @@ public class DefaultTrackService implements TrackService {
 	public Track getByID(long id) {
 		return td.getByID(id);
 }
+
+
+	@Override
+	public InputStream play(Track track) {
+		try {
+			return new FileInputStream(new File(track.getPath()));
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 }

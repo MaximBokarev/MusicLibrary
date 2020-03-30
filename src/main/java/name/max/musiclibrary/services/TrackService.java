@@ -1,6 +1,7 @@
 package name.max.musiclibrary.services;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import name.max.musiclibrary.entities.Track;
@@ -16,5 +17,7 @@ public interface TrackService {
 	List<Track> getAllTracks();
 	
 	Track getByID(long id);
+
+	InputStream play(Track track);
 
 }
