@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import name.max.musiclibrary.dao.DBTrackDAO;
+import name.max.musiclibrary.dao.TrackDAO;
 import name.max.musiclibrary.entities.Track;
 
 public class DefaultTrackService implements TrackService {
-	private DBTrackDAO td = new DBTrackDAO();
+	private TrackDAO td = new DBTrackDAO();
 	
 	
 	public List<Track> getFilesAsTracks(String path) {
@@ -26,7 +27,8 @@ public class DefaultTrackService implements TrackService {
 		for (File file : listOfFiles) {
 			if (file.isFile()) {
 				String trackPath = file.getAbsolutePath();
-				Track track = new Track(trackPath, 0);
+				String trackName = file.getName();
+				Track track = new Track(trackPath, 0, trackName);
 				tracks.add(track);
 			}
 		}
@@ -75,7 +77,7 @@ public class DefaultTrackService implements TrackService {
 	@Override
 	public InputStream play(Track track) {
 		try {
-			return new FileInputStream(new File(track.getPath()));
+			return new FileInputStream(new File(track.getName()));
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}

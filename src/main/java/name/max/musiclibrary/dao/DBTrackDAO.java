@@ -9,14 +9,12 @@ import java.util.List;
 
 import name.max.musiclibrary.entities.Track;
 
-public class DBTrackDAO extends AbstractDAO<Track> {
+public class DBTrackDAO extends AbstractDAO<Track> implements TrackDAO {
 
 	public void save(Track track) {
 		try (Connection connection = super.getConnection()) {
 			Statement st = connection.createStatement();
-			st.executeUpdate("inser into track (id, path) values (" + track.getId() + ", " + track.getPath() + ")");
-
-			connection.close();
+			st.executeUpdate("insert into track (id, path) values (" + track.getId() + ", " + track.getPath() + ")");
 
 		} catch (SQLException e) {
 
@@ -34,10 +32,10 @@ public class DBTrackDAO extends AbstractDAO<Track> {
 			while (rs.next()) {
 				long id1 = rs.getLong("id");
 				String path = rs.getString("path");
-				track = new Track(path, id1);
-				
+				String name = rs.getString("name");
+				track = new Track(path, id1, name);
+
 			}
-			connection.close();
 
 		} catch (SQLException e) {
 
@@ -75,32 +73,23 @@ public class DBTrackDAO extends AbstractDAO<Track> {
 	}
 
 	public List<Track> getAll() {
-		
-		Connection connection = null;
+
 		List<Track> tracks = new ArrayList<Track>();
-		try {
-			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		
-		connection = super.getConnection();
-		Statement st = connection.createStatement();
+		try (Connection connection = super.getConnection()) {
+			Statement st = connection.createStatement();
 
-		ResultSet rs = st.executeQuery("SELECT * FROM TRACK");
+			ResultSet rs = st.executeQuery("SELECT * FROM TRACK");
 
-		while (rs.next()) {
-			String path = rs.getString("path");
-			long id = rs.getLong("id");
-			Track track = new Track(path, id);
-			tracks.add(track);
-				
-		}
-		} catch (ClassNotFoundException | SQLException e) {
-			throw new RuntimeException(e.getMessage());
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			while (rs.next()) {
+				String path = rs.getString("path");
+				long id = rs.getLong("id");
+				String name = rs.getString("name");
+				Track track = new Track(path, id, name);
+				tracks.add(track);
+
 			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e.getMessage());
 		}
 		return tracks;
 

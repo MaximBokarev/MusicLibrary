@@ -37,6 +37,7 @@ public class TrackController extends HttpServlet {
 				String action = String.valueOf(req.getParameter("action"));
 				super.log("You call " + action + " action");
 				if ("play".equalsIgnoreCase(action)) {
+					resp.addHeader("Content-Type", "audio/mpeg");
 					InputStream is = defaultTrackService.play(track);
 					OutputStream os = resp.getOutputStream();
 

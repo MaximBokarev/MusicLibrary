@@ -43,7 +43,8 @@ public class PlaylistDAO extends AbstractDAO<PlayList> {
 
 				long trackID = rs.getLong("Track.id");
 				String path = rs.getString("Track.path");
-				Track track = new Track(path, trackID);
+				String name1 = rs.getString("Track.name");
+				Track track = new Track(path, trackID, name1);
 				tracks.add(track);
 
 			}
@@ -80,7 +81,8 @@ public class PlaylistDAO extends AbstractDAO<PlayList> {
 
 				long trackID = rs.getLong("Track.id");
 				String path = rs.getString("Track.path");
-				Track track = new Track(path, trackID);
+				String name2 = rs.getString("Track.name");
+				Track track = new Track(path, trackID, name2);
 				tracks.add(track);
 
 			}

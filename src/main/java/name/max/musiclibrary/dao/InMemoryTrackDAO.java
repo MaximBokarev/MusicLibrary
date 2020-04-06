@@ -7,7 +7,7 @@ import name.max.musiclibrary.entities.Track;
 
 public class InMemoryTrackDAO implements TrackDAO {
 
-	Map<Long, Track> tracks = Map.of(1l, new Track("/Users/anton.panchenko/tmp/m/Come as You Are (Evokings Remix) (TerritoryDeepHouse).mp3", 1));
+	Map<Long, Track> tracks = Map.of(1l, new Track("F:\\Tracks/Andreas Henneberg - Better Than This (Original Mix)", 1, "Andreas Henneberg - Better Than This (Original Mix)"));
 	@Override
 	public void save(Track t) {
 		// TODO Auto-generated method stub
