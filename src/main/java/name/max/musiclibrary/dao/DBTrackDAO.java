@@ -14,7 +14,7 @@ public class DBTrackDAO extends AbstractDAO<Track> implements TrackDAO {
 	public void save(Track track) {
 		try (Connection connection = super.getConnection()) {
 			Statement st = connection.createStatement();
-			st.executeUpdate("insert into track (id, path) values (" + track.getId() + ", " + track.getPath() + ")");
+			st.executeUpdate("insert into track (id, path, name) values (" + track.getId() + ", " + track.getPath() + track.getName() + ")");
 
 		} catch (SQLException e) {
 
