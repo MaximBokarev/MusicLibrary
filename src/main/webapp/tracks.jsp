@@ -3,7 +3,7 @@
 <body>
 <ul>
 <c:forEach items="${tracks}" var="track">
-    <li><a href="tracks/${track.id}?action=play">${track.path} &nbsp; play</a></li>
+    <li><a href="tracks/${track.id}?action=play">${track.name} &nbsp; play</a></li>
     </c:forEach>
 </ul>
 </body>
